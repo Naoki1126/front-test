@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="./style.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+</head>
+<body>
+    <div id="main">
+
+    </div>
+    <script src="./test.js"></script>
+
+    <script>
+        
+        let v = new Vue({
+            el: "#main",
+            data: {
+                floatItems: false,
+                flashPresent: false,
+                magicBring: false,
+                magicShine: false,
+                showBox: false,
+                shakeLid: false,
+                showPresent: false,
+                showPopup: false,
+                showProphecyPieces: false,
+                openBox: false,
+                zoomPresent: false,
+                loginDatas: {
+                    "amuletPieces": {
+                        "isPresentAmulet": true
+                    },
+                    "isCompleteAnimation": false,
+                    "prophecyBooks": {
+                        "isPresentProphecyBook": false
+                    }
+
+                }
+            },
+            mounted(){
+                console.log(this.loginDatas["amuletPieces"]);
+                this.loginBonusAnimationExecute();
+            },methods:{
+                sleep: function(sleepMs){ //Promiseオブジェクトの返却sleepMsに遅延の時間を指定
+                    return new Promise(function(resolve){
+                        setTimeout(() => {
+                            console.log(sleepMs);
+                            resolve();
+                        }, sleepMs)
+                    });
+                },
+                loginBonusAnimationExecute: function(){
+                    this.commonAnimation().then(function(){
+                        console.log("end common");
+                        if (v.loginDatas["amuletPieces"]["isPresentAmulet"] && v.loginDatas["isCompleteAnimation"] == false || v.loginDatas["prophecyPieces"]["isPresentProphecy"] && v.loginDatas["isCompleteAnimation"] == false){
+                            console.log("startamuletCard")
+                            v.amuletCardPieceAnimation();
+                        }else{
+                            console.log("startProphecy")
+                            v.prophecyPieceAnimation();
+                        }
+                    })
+                },
+                commonAnimation: async function(){
+                    this.magicBrink = false;
+                    await this.sleep(500); //0.5秒後に下のthen内の処理へ
+
+                    this.magicShine = true;
+                    this.magicButton = true; 
+                    await this.sleep(1000);
+                    console.log(111);
+                    this.showBox = true;
+                    await this.sleep(1500)
+                    this.shakeLid = true;
+                    await this.sleep(2000);
+                    this.shakeLid = false;
+                    await this.sleep(2000);
+
+                    this.shakeLid = true;
+                    await this.sleep(2000);
+
+                    this.shakeLid = true;
+                    this.showBox = false;
+                    this.openBox = true
+                    await this.sleep(2000);
+                },
+                amuletCardPieceAnimation: async function(){
+                    
+                    this.showPresent = true
+                    this.floatItems = true;
+                    await this.sleep(1000)
+
+                    this.zoomPresent = true;
+                    await this.sleep(2000)
+
+                    this.showPopup = true;
+                },
+                prophecyPieceAnimation: async function(){
+        
+                    this.showProphecyPieces = true;
+                    this.floatItems = true;
+
+                    let isCompleteAnimation = this.loginDatas["isCompleteAnimation"] == true && this.loginDatas["prophecyBooks"]["isPresentProphecyBook"] == true 
+                    if(isCompleteAnimation){
+                        await this.sleep(4000)
+                    }else{
+                        await this.sleep(2000)
+                    }
+
+                    this.slideProphecyItems = true;
+                    if (isCompleteAnimation){
+                        await this.sleep(4000)
+                    }else{
+                        await this.sleep(2000)
+                    }
+                    this.flashPresent = true
+                    await this.sleep(2200)
+
+                    this.showPopup = true;
+                }
+            },
+        })
+
+    </script>
+</body>
+</html>
