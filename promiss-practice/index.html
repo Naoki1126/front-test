@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="./style.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+</head>
+<body>
+    <div id="main">
+
+    </div>
+    <script src="./test.js"></script>
+
+    <script>
+        
+        let v = new Vue({
+                el: "#main",
+                data: {
+                    floatItems: false,
+                    flashPresent: false,
+                    magicBring: false,
+                    magicShine: false,
+                    showBox: false,
+                    shakeLid: false,
+                    showPresent: false,
+                    showPopup: false,
+                    showProphecyPieces: false,
+                    openBox: false,
+                    zoomPresent: false,
+                    loginDatas: {
+                        "amuletPieces": {
+                            "isPresentAmulet": true
+                        },
+                        "isCompleteAnimation": false,
+                        "prophecyBooks": {
+                            "isPresentProphecyBook": false
+                        }
+
+                    }
+                },
+                mounted(){
+                    console.log(this.loginDatas["amuletPieces"]);
+                    this.loginBonusAnimation()
+                },methods:{
+                    sleep: function(sleepMs){ //Promiseオブジェクトの返却sleepMsに遅延の時間を指定
+                        return new Promise(function(resolve){
+                            setTimeout(() => {
+                                console.log(sleepMs);
+                                resolve();
+                            }, sleepMs)
+                        });
+                    },
+                    // loginAnimationExecute: function(){
+                    //     this.commonAnimation().then(function(){
+                    //         this.amuletCardPieceAnimation();
+                    //     })
+                    // },
+                    loginBonusAnimation: function(){
+                        this.sleep(0).then(function(){
+                            v.magicBrink = false;
+                            return sleep(500); //0.5秒後に下のthen内の処理へ
+                        }).then(function(){
+                            v.magicShine = true;
+                            v.magicButton = true; 
+                            return sleep(1000);
+                        }).then(function(){
+                            v.showBox = true;
+                            return sleep(1500)
+                        }).then(function(){
+                            v.shakeLid = true;
+                            return sleep(2000);
+                        }).then(function(){
+                            v.shakeLid = false;
+                            return sleep(2000);
+                        }).then(function(){
+                            v.shakeLid = true;
+                            return sleep(2000);
+                        }).then(function(){
+                            v.shakeLid = true;
+                            v.showBox = false;
+                            v.openBox = true
+                            return sleep(2000);
+                        }).then(function(){
+                            console.log(v.shakeLid)
+                            if (v.loginDatas["amuletPieces"]["isPresentAmulet"] && v.loginDatas["isCompleteAnimation"] == false || v.loginDatas["prophecyPieces"]["isPresentProphecy"] && v.loginDatas["isCompleteAnimation"] == false){
+                                v.amuletCardPieceAnimation();
+                            }else{
+                                v.prophecyPieceAnimation();
+                            }
+                        })
+                    },
+                    amuletCardPieceAnimation: function(){
+                        v.sleep(0).then(function(){
+                            v.showPresent = true
+                            v.floatItems = true;
+                            return sleep(1000)
+                        }).then(function(){
+                            v.zoomPresent = true;
+                            return sleep(2000)
+                        }).then(function(){
+                            v.showPopup = true;
+                        })
+                    },
+                    prophecyPieceAnimation: function(){
+                        v.sleep(0).then(function(){
+                            v.showProphecyPieces = true;
+                            v.floatItems = true;
+
+                            let isCompleteAnimation = v.loginDatas["isCompleteAnimation"] == true && v.loginDatas["prophecyBooks"]["isPresentProphecyBook"] == true 
+                            if(isCompleteAnimation){
+                                return sleep(4000)
+                            }else{
+                                return sleep(2000)
+                            }
+                        }).then(function(){
+                            v.slideProphecyItems = true;
+                            if (isCompleteAnimation){
+                                return sleep(4000)
+                            }else{
+                                return sleep(2000)
+                            }
+                        }).then(function(){
+                            v.flashPresent = true
+                            return sleep(2200)
+                        }).then(function(){
+                            v.showPopup = true;
+                        })
+                    }
+                },
+        })
+
+    </script>
+</body>
+</html>
